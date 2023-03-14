@@ -5,40 +5,73 @@ import java.util.*;
 
 // 드래곤 커브
 public class No15685 {
-    public static void main(String[] argv) throws IOException {
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int count = Integer.valueOf(br.readLine()); // 드래곤 커브의 개수
-        List<List<Integer>> xys = new ArrayList<>(); // 각 드래곤 커브의 시작 좌표와 xy 리스트
-        int ractagle = 0; // 정사각형의 개수
+        int answer = 0; // 정사각형의 개수
+        boolean[][] xy = new boolean[101][101]; // xy 좌표계 (초기값 : false)
+
+        // xy 좌표 (오른쪽, 위쪽, 왼쪽, 아래쪽)
+        int[] x = new int[]{1, 0, -1, 0};
+        int[] y = new int[]{0, -1, 0, 1};
 
         for(int i=0; i<count; i++) { // 드래곤 커브의 개수만큼 반복
             String[] dragon = br.readLine().split(" ");
-            int start_x = Integer.valueOf(dragon[0]); // 시작위치의 x좌표
-            int start_y = Integer.valueOf(dragon[1]); // 시작위치의 y좌표
-            int dir = Integer.valueOf(dragon[2]); // 시작 방향
+            int current_x = Integer.valueOf(dragon[0]); // 시작위치의 x좌표
+            int current_y = Integer.valueOf(dragon[1]); // 시작위치의 y좌표
             int gen = Integer.valueOf(dragon[3]); // 세대수
 
-            // 현재 드래곤 커브의 xy 경로
-            List<Integer> xy = new ArrayList<>();
+            // 드래곤 커브의 방향
+            List<Integer> dir = new ArrayList<>();
 
-            for(int j=0; j<gen; j++) { // 세대 수만큼 반복
+            // 드래곤 커브의 이동 좌표
+            dir.add(Integer.valueOf(dragon[2])); // 시작 방향 추가
+            xy[current_x][current_y] = true; // 시작 좌표
+            System.out.println(current_x + " " + current_y);
+            System.out.println("방향 : " + dir.get(0));
+            current_x = current_x + x[dir.get(0)];
+            current_y = current_y + y[dir.get(0)];
+            xy[current_x][current_y] = true; // 이동 좌표
+            System.out.println(current_x + " " + current_y);
 
-            }
-
-            xys.add(xy);
+//            for(int j=0; j<gen; j++) { // 세대 수만큼 반복
+                if(gen != 0) rotate(dir, xy, current_x, current_y, gen); // 재귀호출
+//            }
         }
 
         // 사각형 여부 확인하기
+        for(int i=0; i<xy.length-1; i++) {
+            for(int j=0; j<xy[i].length-1; j++) {
+                if(xy[i][j] && xy[i+1][j] && xy[i][j+1] && xy[i+1][j+1]) answer++;
+            }
+        }
 
-        System.out.println(ractagle);
+        System.out.println(answer);
     }
 
-    // 매개변수 xy 좌표의 반시계방향 90도 회전 좌표 반환
-    public int[] rotatedLeft90(int x, int y) {
-        int[] xy = new int[]{};
+    // 현재 list의 역순으로 반시계방향 90도 회전한 방향을 list에 추가하기 && 이동 좌표값 true로 변경
+    // 0 : 오른쪽, 1 : 위쪽, 2 : 왼족, 3 : 아래쪽
+    public static void rotate(List<Integer> dir, boolean[][] xy, int current_x, int current_y, int gen) {
+        // xy 좌표 (오른쪽, 위쪽, 왼쪽, 아래쪽)
+        int[] x = new int[]{1, 0, -1, 0};
+        int[] y = new int[]{0, -1, 0, 1};
 
+        for(int i = dir.size()-1; i>=0; i--) {
+            int d = (dir.get(i)+1)%4; // 현재 이동 방향
+            System.out.println("방향 : " + d);
 
+            // 현재 list의 역순으로 반시계방향 90도 회전한 방향을 list에 추가하기
+            dir.add(d);
 
-        return xy;
+            // 이동 좌표값 true로 변경
+            current_x = current_x + x[d];
+            current_y = current_y + y[d];
+            xy[current_x][current_y] = true;
+            System.out.println(current_x + " " + current_y);
+        }
+
+        System.out.println("세대수 : " + gen);
+        System.out.println();
+        if(--gen > 0) rotate(dir, xy, current_x, current_y, gen);
     }
 }
