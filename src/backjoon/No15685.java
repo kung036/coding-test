@@ -27,16 +27,11 @@ public class No15685 {
             // 드래곤 커브의 이동 좌표
             dir.add(Integer.valueOf(dragon[2])); // 시작 방향 추가
             xy[current_x][current_y] = true; // 시작 좌표
-            System.out.println(current_x + " " + current_y);
-            System.out.println("방향 : " + dir.get(0));
             current_x = current_x + x[dir.get(0)];
             current_y = current_y + y[dir.get(0)];
             xy[current_x][current_y] = true; // 이동 좌표
-            System.out.println(current_x + " " + current_y);
 
-//            for(int j=0; j<gen; j++) { // 세대 수만큼 반복
-                if(gen != 0) rotate(dir, xy, current_x, current_y, gen); // 재귀호출
-//            }
+            if(gen != 0) rotate(dir, xy, current_x, current_y, gen); // 재귀호출
         }
 
         // 사각형 여부 확인하기
@@ -58,7 +53,6 @@ public class No15685 {
 
         for(int i = dir.size()-1; i>=0; i--) {
             int d = (dir.get(i)+1)%4; // 현재 이동 방향
-            System.out.println("방향 : " + d);
 
             // 현재 list의 역순으로 반시계방향 90도 회전한 방향을 list에 추가하기
             dir.add(d);
@@ -67,11 +61,8 @@ public class No15685 {
             current_x = current_x + x[d];
             current_y = current_y + y[d];
             xy[current_x][current_y] = true;
-            System.out.println(current_x + " " + current_y);
         }
 
-        System.out.println("세대수 : " + gen);
-        System.out.println();
         if(--gen > 0) rotate(dir, xy, current_x, current_y, gen);
     }
 }
