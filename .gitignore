@@ -23,7 +23,7 @@
 hs_err_pid*
 
 # xml files
-*.xml
+.idea/*
 
 # Main.java
-Main.java
+/src/Main.java
