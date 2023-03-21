@@ -11,10 +11,12 @@ public class Level2_2 {
         int answer = s.solution(board);
         System.out.println("answer : " + answer); // 7
 
-        String[] section2 = new String[]{
+        System.out.println();
+
+        String[] board2 = new String[]{
                 ".D.R", "....", ".G..", "...D"
         };
-        answer = s.solution(board);
+        answer = s.solution(board2);
         System.out.println("answer : " + answer); // -1
     }
 
@@ -22,20 +24,20 @@ public class Level2_2 {
         public int solution(String[] board) {
             int answer = 0;
             int[] list = firstCheck(board);
-            System.out.println(list[0]);
+            boolean[][] visited = new boolean[board.length][board[0].length()];
 
             if (list[0] == -1) answer = -1;
-            else {
-                answer = dfs(board, answer, 0, list[1], list[2]);
-            }
+            else answer = dfs(board, visited, answer, 0, list[1], list[2]);
 
             return answer;
         }
 
-        public int dfs(String[] board, int answer, int count, int y, int x) {
-            System.out.println(y + " " + x);
+        public int dfs(String[] board, boolean[][] visited, int answer, int count, int y, int x) {
+            visited[y][x] = true;
+            System.out.println("dfs : " + y + " " + x);
             if (board[y].charAt(x) == 'G') {
-                if (count < answer) return count;
+                System.out.println(answer + " " + count);
+                if (answer == 0 || count < answer) return count;
                 else return answer;
             }
 
@@ -44,28 +46,51 @@ public class Level2_2 {
                 for (; i >= 0; i--) {
                     if (board[i].charAt(x) == 'D') break;
                 }
-                dfs(board, answer, count + 1, i + 1, x);
+
+                if(board[i+1].charAt(x) == 'G') {
+                    System.out.println(answer + " " + count);
+                    if (answer == 0 || count < answer) answer = count;
+                } else if(i+1 != y && !visited[i+1][x])
+                    if(count+1 < dfs(board, visited.clone(), answer, count + 1, i + 1, x))
+                        answer = count + 1;
+            }
+            if ((x - 1) > 0) { // 좌
+                int i = x;
+                for (; i >= 0; i--) {
+                    if (board[y].charAt(i) == 'D') break;
+                }
+
+                if(board[y].charAt(i+1) == 'G') {
+                    System.out.println(answer + " " + count);
+                    if (answer == 0 || count < answer) answer = count;
+                } else if(i+1 != x && !visited[y][i+1])
+                    if(count+1 < dfs(board, visited.clone(), answer, count + 1, y, i + 1))
+                        answer = count + 1;
             }
             if ((y + 1) < board.length) { // 하
                 int i = y;
                 for (; i < board.length; i++) {
                     if (board[i].charAt(x) == 'D') break;
                 }
-                dfs(board, answer, count + 1, i - 1, x);
+
+                if(board[i-1].charAt(x) == 'G') {
+                    System.out.println(answer + " " + count);
+                    if (answer == 0 || count < answer) answer = count;
+                } else if(i-1 != y && !visited[i-1][x])
+                    if(count+1 < dfs(board, visited.clone(), answer, count + 1,i - 1, x))
+                        answer = count + 1;
             }
-            if ((x + 1) < board.length) { // 좌
+            if ((x + 1) < board.length) { // 우
                 int i = x;
                 for (; i < board.length; i++) {
                     if (board[y].charAt(i) == 'D') break;
                 }
-                dfs(board, answer, count + 1, y, i - 1);
-            }
-            if ((x - 1) > 0) { // 우
-                int i = x;
-                for (; i >= 0; i--) {
-                    if (board[y].charAt(i) == 'D') break;
-                }
-                dfs(board, answer, count + 1, y, i + 1);
+                if(board[y].charAt(i-1) == 'G') {
+                    System.out.println(answer + " " + count);
+                    if (answer == 0 || count < answer) answer = count;
+                } else if(i-1 != x && !visited[y][i-1])
+                    if(count+1 < dfs(board, visited.clone(), answer, count + 1,y, i - 1))
+                        answer = count + 1;
             }
 
             return answer;
@@ -79,17 +104,14 @@ public class Level2_2 {
 
             for (int i = 0; i < board.length; i++) {
                 if (board[i].contains("G") || board[i].contains("R")) {
-                    for (int j = 0; j < board.length; j++) {
+                    for (int j = 0; j < board[i].length(); j++) {
                         if (board[i].charAt(j) == 'G') {
                             list[0] = -1;
-                            if (i - 1 >= 0) System.out.println(board[i - 1].charAt(j) + " " + i + " " + j);
                             if ((i + 1) < board.length && board[i + 1].charAt(j) == 'D') list[0] = 0;
                             if ((i - 1) >= 0 && board[i - 1].charAt(j) == 'D') list[0] = 0;
                             if ((j + 1) < board.length && board[i].charAt(j + 1) == 'D') list[0] = 0;
                             if ((j - 1) >= 0 && board[i].charAt(j - 1) == 'D') list[0] = 0;
-                            continue;
-                        }
-                        if (board[i].charAt(j) == 'R') {
+                        } else if (board[i].charAt(j) == 'R') {
                             list[1] = i;
                             list[2] = j;
                         }
