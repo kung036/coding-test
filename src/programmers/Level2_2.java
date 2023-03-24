@@ -1,5 +1,8 @@
 package programmers;
 
+import java.util.Arrays;
+import java.util.*;
+
 // 리코쳇 로봇
 public class Level2_2 {
     public static void main(String[] args) {
@@ -34,68 +37,60 @@ public class Level2_2 {
 
         public int dfs(String[] board, boolean[][] visited, int answer, int count, int y, int x) {
             visited[y][x] = true;
-            System.out.println("dfs : " + y + " " + x);
+
+            // Base Case
             if (board[y].charAt(x) == 'G') {
-                System.out.println(answer + " " + count);
                 if (answer == 0 || count < answer) return count;
                 else return answer;
             }
 
-            if ((y - 1) > 0) { // 상
-                int i = y;
-                for (; i >= 0; i--) {
-                    if (board[i].charAt(x) == 'D') break;
-                }
+            // Recursice Case
+            count++;
+            int[] dir_x = { 0, -1, 0, 1 };
+            int[] dir_y = { -1, 0, 1, 0 };
+            boolean[][] visited_clone = copyArray(visited);
 
-                if(board[i+1].charAt(x) == 'G') {
-                    System.out.println(answer + " " + count);
-                    if (answer == 0 || count < answer) answer = count;
-                } else if(i+1 != y && !visited[i+1][x])
-                    if(count+1 < dfs(board, visited.clone(), answer, count + 1, i + 1, x))
-                        answer = count + 1;
-            }
-            if ((x - 1) > 0) { // 좌
-                int i = x;
-                for (; i >= 0; i--) {
-                    if (board[y].charAt(i) == 'D') break;
-                }
+            for(int i=0; i<dir_x.length; i++) {
+                if(x+dir_x[i] >= 0 &&
+                        y+dir_y[i] >= 0 &&
+                        x+dir_x[i] < board[0].length() &&
+                        y+dir_y[i] < board.length) {
+                    int move_x = x;
+                    int move_y = y;
+                    // D가 있을 때까지 이동하기
+                    for(; move_x>=0 && move_y >=0 && move_x<board[0].length() && move_y<board.length;
+                                                                    move_x+=dir_x[i], move_y+=dir_y[i]) {
+                        if(board[move_y].charAt(move_x) == 'D') break;
+                    }
+                    move_x += -1*dir_x[i];
+                    move_y += -1*dir_y[i];
 
-                if(board[y].charAt(i+1) == 'G') {
-                    System.out.println(answer + " " + count);
-                    if (answer == 0 || count < answer) answer = count;
-                } else if(i+1 != x && !visited[y][i+1])
-                    if(count+1 < dfs(board, visited.clone(), answer, count + 1, y, i + 1))
-                        answer = count + 1;
-            }
-            if ((y + 1) < board.length) { // 하
-                int i = y;
-                for (; i < board.length; i++) {
-                    if (board[i].charAt(x) == 'D') break;
+                    if(board[move_y].charAt(move_x) == 'G') { // G에 도달했을 때
+                        if(answer == 0 || count < answer) answer = count;
+                        break;
+                    } else if(!visited[move_y][move_x]) { // 방문한 적이 없는 경우
+                        int tmp = dfs(board, visited_clone, answer, count, move_y, move_x);
+                        if(answer == 0 || tmp < answer) answer = tmp;
+                    }
                 }
-
-                if(board[i-1].charAt(x) == 'G') {
-                    System.out.println(answer + " " + count);
-                    if (answer == 0 || count < answer) answer = count;
-                } else if(i-1 != y && !visited[i-1][x])
-                    if(count+1 < dfs(board, visited.clone(), answer, count + 1,i - 1, x))
-                        answer = count + 1;
-            }
-            if ((x + 1) < board.length) { // 우
-                int i = x;
-                for (; i < board.length; i++) {
-                    if (board[y].charAt(i) == 'D') break;
-                }
-                if(board[y].charAt(i-1) == 'G') {
-                    System.out.println(answer + " " + count);
-                    if (answer == 0 || count < answer) answer = count;
-                } else if(i-1 != x && !visited[y][i-1])
-                    if(count+1 < dfs(board, visited.clone(), answer, count + 1,y, i - 1))
-                        answer = count + 1;
             }
 
             return answer;
         }
 
+        // 이중배열 깊은복사
+        boolean[][] copyArray(boolean[][] arr) {
+            boolean[][] copy = new boolean[arr.length][arr[0].length];
+            for(int i=0; i<arr.length; i++) {
+                for(int j=0; j<arr[i].length; j++) {
+                    copy[i][j] = arr[i][j];
+                }
+            }
+
+            return copy;
+        }
+
+        // G, R 위치 찾기 & 결과값이 있는지 확인
         public int[] firstCheck(String[] board) {
             int[] list = new int[3];
             list[0] = -2;
