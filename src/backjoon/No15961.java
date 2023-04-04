@@ -26,12 +26,19 @@ public class No15961 {
 
         int count = 0;
         while(count < N) {
-            while (true) {
-
+            int tmp = 1;
+            boolean b = sushi[count%N] == c ? false : true;
+            for(int i=1; i<k; i++) {
+                int index = (count+i)%N;
+                if(sushi[index] == c) b = false; // 쿠폰 번호가 있는 경우
+                if(sushi[index] != sushi[(count+i-1)%N]) tmp++;
             }
 
-
-            if(answer == k+1) break;
+            if(answer < tmp) answer = tmp;
+            if(tmp == k && b) {
+                answer = k+1;
+                break;
+            }
             count++;
         }
 
