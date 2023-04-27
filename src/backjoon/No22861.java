@@ -133,33 +133,132 @@ package backjoon;//package backjoon;
 //    }
 //}
 
+//import java.io.*;
+//import java.lang.*;
+//import java.util.*;
+//
+//public class No22861 {
+//
+//    static int n;
+//    public static void main(String[] args) throws IOException {
+//        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+//        n = Integer.parseInt(br.readLine());
+//        HashMap<String, Integer> map = new HashMap<>();
+//
+//        for(int i=0; i<n; i++){
+//            String s = br.readLine();
+//            int index = s.indexOf(".");
+//            String str = s.substring(index+1);
+//            map.put(str, map.getOrDefault(str, 0)+1);
+//        }
+//
+//        Set<String> strings = map.keySet();
+//
+//        List<String> list = new ArrayList<>(strings);
+//
+//        Collections.sort(list);
+//
+//        for(int i=0; i<list.size(); i++){
+//            System.out.println(list.get(i)+" "+map.get(list.get(i)));
+//        }
+//    }
+//}
+
 import java.io.*;
 import java.lang.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class No22861 {
+    // 폴더를 입력받으면, 폴더의 쿼리 반환
+    static String findKey(String key, Map<String, Set<String>> map) {
+        // key가 포함된 쿼리가 있는 것만 필터링
+        List<String> keys = map.keySet().stream().filter(s -> s.contains(key)).collect(Collectors.toList());
 
-    static int n;
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        n = Integer.parseInt(br.readLine());
-        HashMap<String, Integer> map = new HashMap<>();
+        // 상위 폴더가 없는 경우
+        if(keys.isEmpty()) return "";
 
-        for(int i=0; i<n; i++){
-            String s = br.readLine();
-            int index = s.indexOf(".");
-            String str = s.substring(index+1);
-            map.put(str, map.getOrDefault(str, 0)+1);
+        // 상위 폴더가 있는 경우
+        String[] keyArray = keys.get(0).split("/");
+        String query = keyArray[0];
+        if(!keyArray[0].equals(key)) {
+            for(int i=1; i<keyArray.length; i++) {
+                query = query + "/" +keyArray[i];
+                if(keyArray[i].equals(key)) break;
+            }
         }
 
-        Set<String> strings = map.keySet();
+        return query;
+    }
 
-        List<String> list = new ArrayList<>(strings);
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        Map<String, Set<String>> map = new HashMap<>();
 
-        Collections.sort(list);
+        // 폴더와 파일의 개수 합
+        int count = sc.nextInt() + sc.nextInt();
+        for(int i=0; i<count; i++) {
+            String P = sc.next(); // 상위 폴더 이름
+            String F = sc.next(); // 폴더 또는 파일 이름
+            int C = sc.nextInt(); // 1 = 폴더, 0 = 파일
 
-        for(int i=0; i<list.size(); i++){
-            System.out.println(list.get(i)+" "+map.get(list.get(i)));
+            String highFolder = findKey(P, map); // 상위 폴더의 쿼리 찾기
+            // 폴더인 경우
+            if(C == 1) {
+                if(highFolder.equals("")) { // 상위 폴더가 없는 경우
+                    map.put(P+"/"+F, new HashSet<>());
+                } else { // 상위 폴더가 있는 경우
+                    map.put(highFolder+"/"+F, new HashSet<>());
+                }
+            } else { // 파일인 경우
+                map.get(highFolder).add(F);
+            }
+        }
+
+//        System.out.println(map.entrySet());
+
+
+        // 파일 이동
+        count = sc.nextInt();
+        for(int i=0; i<count; i++) {
+            // 폴더A와 폴더B의 폴더 경로
+            String A = sc.next();
+            String B = sc.next();
+
+            // 폴더A, 폴더B의 value 찾기
+            Set<String> folderA = map.get(A);
+            Set<String> folderB = map.get(B);
+
+            // 폴더A의 파일을 폴더B로 이동 및 폴더A 삭제
+            folderB.addAll(folderA);
+            map.remove(A, folderA);
+
+            // 폴더A 내에 있는 폴더의 경로 변경
+            List<String> lowFolders = map.keySet().stream().filter(s -> s.contains(A)).collect(Collectors.toList()); // 폴더A 안에 있는 폴더명 검색
+            for(int j=0; j<lowFolders.size(); j++) {
+                map.put(lowFolders.get(j).replace(A, B), map.get(lowFolders.get(j)));
+                map.remove(lowFolders.get(j));
+            }
+        }
+
+//        System.out.println(map.entrySet());
+
+        // 폴더 내 파일 종류와 개수 출력하기
+        count = sc.nextInt();
+        for(int i=0; i<count; i++) {
+            Set<String> fileType = new HashSet<>(); // 파일의 종류
+            List<String> fileCount = new ArrayList<>(); // 파일의 개수
+
+            String findFolder = sc.next(); // 탐색할 폴더
+            List<String> findFolders = map.keySet().stream().filter(s -> s.contains(findFolder)).collect(Collectors.toList()); // 탐색할 폴더 안에 있는 폴더명 검색
+            for(int j=0; j<findFolders.size(); j++) {
+                Set<String> values = map.get(findFolders.get(j));
+                // 탐색할 폴더 내부에 있는 파일 추가하기
+                fileType.addAll(values);
+                fileCount.addAll(values);
+            }
+
+            System.out.println(fileType.size() + " " + fileCount.size());
         }
     }
 }
