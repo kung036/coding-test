@@ -164,8 +164,8 @@ package backjoon;//package backjoon;
 //    }
 //}
 
-import java.io.*;
 import java.lang.*;
+import java.text.NumberFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -194,6 +194,8 @@ public class No22861 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         Map<String, Set<String>> map = new HashMap<>();
+        Queue<String> queueFolder = new LinkedList<>();
+        Queue<String> queuefile = new LinkedList<>();
 
         // 폴더와 파일의 개수 합
         int count = sc.nextInt() + sc.nextInt();
@@ -203,19 +205,56 @@ public class No22861 {
             int C = sc.nextInt(); // 1 = 폴더, 0 = 파일
 
             String highFolder = findKey(P, map); // 상위 폴더의 쿼리 찾기
+//            System.out.print("!! " + highFolder);
             // 폴더인 경우
             if(C == 1) {
-                if(highFolder.equals("")) { // 상위 폴더가 없는 경우
+//                if(highFolder.equals("")) { // 상위 폴더가 없는 경우
+                if(P.equals("main")) { // 상위 폴더가 없는 경우
                     map.put(P+"/"+F, new HashSet<>());
                 } else { // 상위 폴더가 있는 경우
-                    map.put(highFolder+"/"+F, new HashSet<>());
+                    if(map.get(highFolder) == null) {
+                        queueFolder.add(P);
+                        queueFolder.add(F);
+                    } else map.put(highFolder+"/"+F, new HashSet<>());
                 }
             } else { // 파일인 경우
-                map.get(highFolder).add(F);
+                if(map.get(highFolder) == null) {
+                    queuefile.add(P);
+                    queuefile.add(F);
+                } else map.get(highFolder).add(F);
             }
+//            System.out.println(" " + map.entrySet());
         }
 
 //        System.out.println(map.entrySet());
+
+        // 폴더인 경우
+        while(!queueFolder.isEmpty()) {
+            String P = queueFolder.poll();
+            String F = queueFolder.poll();
+            String highFolder = findKey(P, map);
+
+            if(map.get(highFolder) == null) {
+                queueFolder.add(P);
+                queueFolder.add(F);
+            } else map.put(highFolder+"/"+F, new HashSet<>());
+        }
+
+//        System.out.println(map.entrySet());
+
+        // 파일인 경우
+        while(!queuefile.isEmpty()) {
+            String P = queuefile.poll();
+            String F = queuefile.poll();
+            String highFolder = findKey(P, map);
+
+            if(map.get(highFolder) == null) {
+                queuefile.add(P);
+                queuefile.add(F);
+            } else map.get(highFolder).add(F);
+        }
+
+        System.out.println(map.entrySet());
 
 
         // 파일 이동
@@ -228,8 +267,18 @@ public class No22861 {
             // 폴더A, 폴더B의 value 찾기
             Set<String> folderA = map.get(A);
             Set<String> folderB = map.get(B);
+            System.out.println(A);
+            System.out.println(B);
+            System.out.println(folderA);
+            System.out.println(folderB);
 
             // 폴더A의 파일을 폴더B로 이동 및 폴더A 삭제
+            if(folderA == null) {
+                throw new RuntimeException();
+            }
+            if(folderB == null) {
+                throw new EmptyStackException();
+            }
             folderB.addAll(folderA);
             map.remove(A, folderA);
 
@@ -240,8 +289,6 @@ public class No22861 {
                 map.remove(lowFolders.get(j));
             }
         }
-
-//        System.out.println(map.entrySet());
 
         // 폴더 내 파일 종류와 개수 출력하기
         count = sc.nextInt();
@@ -254,8 +301,8 @@ public class No22861 {
             for(int j=0; j<findFolders.size(); j++) {
                 Set<String> values = map.get(findFolders.get(j));
                 // 탐색할 폴더 내부에 있는 파일 추가하기
-                fileType.addAll(values);
-                fileCount.addAll(values);
+                if(values != null) fileType.addAll(values);
+                if(values != null) fileCount.addAll(values);
             }
 
             System.out.println(fileType.size() + " " + fileCount.size());
