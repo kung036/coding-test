@@ -52,8 +52,8 @@ public class No22861 {
             }
         }
 
-        System.out.println(folders.entrySet());
-        System.out.println(files.entrySet());
+//        System.out.println(folders.entrySet());
+//        System.out.println(files.entrySet());
 
         // 파일 이동
         count = sc.nextInt();
@@ -75,15 +75,15 @@ public class No22861 {
             // 폴더A 내에 있는 파일들을 폴더B로 옮기기
             Set<String> fileA = files.get(A);
             Set<String> fileB = files.get(B);
-            System.out.println("!! " + fileA);
-            System.out.println("!! " + fileB);
+//            System.out.println("!! " + fileA);
+//            System.out.println("!! " + fileB);
             if(!fileA.isEmpty()) fileB.addAll(fileA);
-            System.out.println("!! " + fileB);
+//            System.out.println("!! " + fileB);
             files.remove(A);
         }
 
-        System.out.println(folders.entrySet());
-        System.out.println(files.entrySet());
+//        System.out.println(folders.entrySet());
+//        System.out.println(files.entrySet());
 
         // 폴더 내 파일 종류와 개수 출력하기
         count = sc.nextInt();
@@ -97,17 +97,47 @@ public class No22861 {
 
             // 탐색할 폴더 안에 있는 폴더명 검색
             List<String> findFolders = folders.get(findFolderName).stream().collect(Collectors.toList());
-            System.out.println("!! " + findFolders);
-            System.out.println("!! " + files.keySet());
-            for(int j=0; j<findFolders.size(); j++) {
-                String tmp = findFolders.get(i);
-                Set<String> tmpFolder = files.get(tmp);
-                System.out.println(findFolders.get(i));
-                System.out.println(tmpFolder);
-                System.out.println(files.containsKey(findFolders.get(i)));
-                fileType.addAll(tmpFolder);
-                fileCount.addAll(tmpFolder);
+
+            // 탐색한 폴더명으로 하위 폴더 모두 검색
+            Queue<String> queue = new LinkedList<>();
+            queue.add(findFolderName);
+            Queue<String> check = new LinkedList<>();
+            check.add(findFolderName);
+            while(!check.isEmpty()) {
+                String tmp = check.poll();
+//                System.out.println("!! chekc : " + tmp);
+                if(folders.get(tmp) != null) {
+                    List<String> tmpSet = folders.get(tmp).stream().collect(Collectors.toList());
+                    for(int j=0; j<tmpSet.size(); j++) {
+                        queue.add(tmpSet.get(j));
+                        check.add(tmpSet.get(j));
+                    }
+                }
             }
+
+//            System.out.println("!! 개수 : " + findFolders);
+//            System.out.println("!! " + files.keySet());
+//            if(files.get(findFolderName) != null) {
+//                fileType.addAll(files.get(findFolderName));
+//                fileCount.addAll(files.get(findFolderName));
+//            }
+            while(!queue.isEmpty()) {
+                String tmp = queue.poll();
+                Set<String> tmpFolder = files.get(tmp);
+                if(tmpFolder != null) {
+                    fileType.addAll(tmpFolder);
+                    fileCount.addAll(tmpFolder);
+                }
+            }
+//            for(int j=0; j<findFolders.size(); j++) {
+//                String tmp = findFolders.get(j);
+//                Set<String> tmpFolder = files.get(tmp);
+//                System.out.println(findFolders.get(j));
+//                System.out.println(tmpFolder);
+//                System.out.println(files.containsKey(findFolders.get(j)));
+//                fileType.addAll(tmpFolder);
+//                fileCount.addAll(tmpFolder);
+//            }
 
             System.out.println(fileType.size() + " " + fileCount.size());
         }
