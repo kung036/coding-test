@@ -9,17 +9,20 @@ public class No1764 {
         int N = sc.nextInt();
         int M = sc.nextInt();
 
-        List<String> listen = new ArrayList<>();
-        List<String> watch = new ArrayList<>();
-        while(N-- > 0) {
-            listen.add(sc.next());
-        }
-        while(M-- > 0) {
-            watch.add(sc.next());
-        }
+       Map<String, Integer> map = new HashMap<>();
+       List<String> list = new ArrayList<>();
 
-        watch.retainAll(listen);
-        System.out.println(watch.size());
-        watch.stream().forEach(System.out::println);
+       while(N-->0) {
+           map.put(sc.next(), 1);
+       }
+       while(M-->0) {
+           String name = sc.next();
+           map.put(name, map.getOrDefault(name,0) +  1);
+           if(map.get(name) == 2) list.add(name);
+       }
+
+       System.out.println(list.size());
+       list.stream().sorted().forEach(System.out::println);
+
     }
 }
