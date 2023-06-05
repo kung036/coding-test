@@ -9,15 +9,17 @@ public class No1764 {
         int N = sc.nextInt();
         int M = sc.nextInt();
 
-        Set<String> set = new HashSet<>();
-        List<String> list = new ArrayList<>();
+        List<String> listen = new ArrayList<>();
+        List<String> watch = new ArrayList<>();
         while(N-- > 0) {
-            list.add(sc.next());
-            set.add(sc.next());
+            listen.add(sc.next());
         }
         while(M-- > 0) {
-//            if(set.contains()) break;
-//            if(list.contains())
+            watch.add(sc.next());
         }
+
+        watch.retainAll(listen);
+        System.out.println(watch.size());
+        watch.stream().forEach(System.out::println);
     }
 }
