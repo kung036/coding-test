@@ -100,7 +100,6 @@ class Level3_1 {
         Set<Integer> summitSet = createSet(summits);
         Set<Integer> gateSet = createSet(summits);
         PriorityQueue<Node> pq = new PriorityQueue<>();
-        Arrays.sort(summits);
 
         int[] intensities = new int[n + 1];
         Arrays.fill(intensities, Integer.MAX_VALUE);
@@ -132,6 +131,7 @@ class Level3_1 {
 
         int index = -1;
         int minIntensity = Integer.MAX_VALUE;
+        Arrays.sort(summits);
         for (int summit : summits) {
             if (intensities[summit] < minIntensity) {
                 minIntensity = intensities[summit];
