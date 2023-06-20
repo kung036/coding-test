@@ -2,6 +2,7 @@ package programmers;
 
 import java.util.*;
 
+// 사이트 : https://jangcenter.tistory.com/120
 class Level3_3 {
     // 해당 IDX의 자식은 누가 있는지
     static ArrayList<Integer>[] childs;
