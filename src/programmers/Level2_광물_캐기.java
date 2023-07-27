@@ -1,9 +1,7 @@
 package programmers;
 
-import java.util.Arrays;
-
 // 광물 캐기
-public class Level2_3 {
+public class Level2_광물_캐기 {
     public static void main(String[] args) {
         Solution s = new Solution();
         int[] picks = {1, 3, 2};

@@ -2,8 +2,9 @@ package programmers;
 
 import java.util.*;
 
+// 양과 늑대
 // 사이트 : https://jangcenter.tistory.com/120
-class Level3_3 {
+class Level3_양과_늑대 {
     // 해당 IDX의 자식은 누가 있는지
     static ArrayList<Integer>[] childs;
     static int[] Info;

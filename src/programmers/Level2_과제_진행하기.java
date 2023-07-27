@@ -1,9 +1,9 @@
 package programmers;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
-public class Level2_4 {
+// 과제 진행하기
+public class Level2_과제_진행하기 {
     public static void main(String[] args) {
         Solution s = new Solution();
         String[][] plans = new String[][]{

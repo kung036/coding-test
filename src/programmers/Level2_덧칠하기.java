@@ -1,10 +1,7 @@
 package programmers;
 
-import java.util.*;
-import java.io.*;
-
 // 덧칠하기
-public class Level2_1 {
+public class Level2_덧칠하기 {
     public static void main(String[] args) {
         Solution s = new Solution();
         int n = 8;

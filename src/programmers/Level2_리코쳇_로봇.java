@@ -1,10 +1,7 @@
 package programmers;
 
-import java.util.Arrays;
-import java.util.*;
-
 // 리코쳇 로봇
-public class Level2_2 {
+public class Level2_리코쳇_로봇 {
     public static void main(String[] args) {
         Solution s = new Solution();
         String[] board = new String[]{

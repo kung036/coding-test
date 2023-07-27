@@ -1,9 +1,7 @@
 package programmers;
 
-import java.util.*;
-
 // 혼자 놀기의 달인
-public class Level2_5 {
+public class Level2_혼자_놀기의_달인 {
     public int solution(int[] cards) {
         int answer = 0;
 
