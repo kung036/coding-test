@@ -3,7 +3,7 @@ package programmers;
 import java.util.*;
 
 // 등산코스 정하기
-public class Levle3_2 {
+public class Level3_2 {
     public static void main(String[] args) {
         Node node = new Node(1, 2);
         Solution s = new Solution();
