@@ -1,25 +1,12 @@
-import java.lang.reflect.Array;
-import java.time.*;
-import java.util.*;
-import java.io.*;
-import java.util.stream.Collectors;
+import algorithm.CycleCheck;
+import programmers.Level2_124_나라의_숫자;
+import programmers.Level2_게임_맵_최단거리;
+import programmers.Level2_배달;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Main {
-    public static void main(String[] args) throws IOException{
-        List<String> list = new ArrayList<>();
-        list.add("abc");
-        if(list.contains("abc")) System.out.println("ok");
-        else System.out.println("no");
-
-        Queue<String> queue = new LinkedList<>();
-        Stack<String> stack = new Stack<>();
-        stack.push("");
-        stack.push("1");
-
-//        stack.pop();
-//        stack.peek();
-        System.out.println(stack.search(""));
-        System.out.println(stack.search("1"));
-        System.out.println(stack.search("2"));
-    }
+    public static void main(String[] args) {}
 }
