@@ -1,16 +1,13 @@
 import java.util.*;
 
 class Solution {
-    boolean[] check;
     int[] queenIndex;
     int answer = 0;
     
     public int solution(int n) {
         // dfs로 퀸의 위치 구하기
-        // 열의 index에 퀸의 방문 여부
         // 각 행의 퀸의 index가 저장되어 배열
         
-        check = new boolean[n];
         queenIndex = new int[n];
         Arrays.fill(queenIndex, -1);
         dfs(0, n);
