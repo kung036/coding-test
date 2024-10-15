@@ -1,49 +1,27 @@
 import java.util.*;
 
 class Solution {
-    int start;
-    int end;
-    int w, n;
-    
     public int solution(int n, int[] stations, int w) {        
-        this.w = w;
-        this.n = n;
-        
         int answer = 0;
-        int index = 1;
         int move = w*2+1;
         
-        int i = 0;
-        int interval, tmp;
+        int idx = 0;
+        int interval = 1;
+        int start=0, end=0;
+        int location = 1;
         
-        while(index <= n) {
-            if(i<stations.length) {
-                findNext(stations, i++);
-                if(start <= index) {
-                    index = end+1;
-                    continue;
-                }
+        while(location<=n) {
+            if(idx<stations.length && stations[idx]-w<=location) {
+                // 이미 설치된 기지국의 전파 도달 거리 안에 있는 경우
+                location = stations[idx]+w+1;
+                idx++;
             } else {
-                start = n+1;
-                end = n;
-            }
-            interval = start - index;
-            if(interval%move == 0) answer += interval/move;
-            else answer += interval/move+1;
-            index = end + 1;
-            // System.out.println(start + " " + end + " " + interval);
+                // 새로 기지국을 설치해야하는 경우
+                location += move;
+                answer++;
+            }            
         }
         
         return answer;
-    }
-    
-    public void findNext(int[] stations, int i) {
-        // start
-        if(stations[i]-w < 1) start = 1;
-        else start = stations[i]-w;
-        
-        // end
-        if(n < stations[i]+w) end = n;
-        else end = stations[i]+w;
     }
 }
