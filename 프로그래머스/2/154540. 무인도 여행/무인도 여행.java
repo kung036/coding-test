@@ -9,18 +9,20 @@ class Solution {
         // bfs로 서로 연결된 무인도 연결하기
         int row = maps.length; // 세로 길이
         int column = maps[0].length(); // 가로 길이
+        int sum = 0; // 각 섬의 채류 가능 일수
         boolean[][] visited = new boolean[row][column];
         List<Integer> answer = new ArrayList<>();
+        Queue<int[]> q = new ArrayDeque<>();
         int[] dy = {-1, 1, 0, 0};
         int[] dx = {0, 0, -1, 1};
         
         for(int i=0; i<row; i++) {
             for(int j=0; j<column; j++) {
+                // 이미 방문하거나 바다면 건너띄기
                 if(visited[i][j] || maps[i].charAt(j) == 'X') continue;
                 
-                Queue<int[]> q = new ArrayDeque<>();
                 q.add(new int[]{i,j});
-                int sum = 0;
+                sum = 0;
                 while(!q.isEmpty()) {
                     int y = q.peek()[0];
                     int x = q.poll()[1];
