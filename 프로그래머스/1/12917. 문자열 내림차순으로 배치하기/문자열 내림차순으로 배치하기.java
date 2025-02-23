@@ -1,19 +1,17 @@
 import java.util.*;
-import java.util.stream.Collectors;
 
 class Solution {
     public String solution(String s) {
-        // 1. 문자열을 문자 배열로 변환
-        Character[] charArray = s.chars()
-                               .mapToObj(ch -> (char)ch)
-                               .toArray(Character[]::new);
+        StringBuilder sb = new StringBuilder();
+        String answer = "";
+        Character[] ch = sb.append(s).chars()
+                                .mapToObj(c -> (char)c)
+                                .sorted((o1, o2) -> Integer.compare(o2, o1))
+                                .toArray(Character[]::new);
+        for(Character c : ch) {
+            answer += c;
+        }
         
-        // 2. 문자 배열 정렬 (내림차순)
-        Arrays.sort(charArray, Collections.reverseOrder());
-        
-        // 3. 문자 배열을 다시 문자열로 변환
-        return Arrays.stream(charArray)
-                    .map(String::valueOf)
-                    .collect(Collectors.joining());
+        return answer;
     }
 }
