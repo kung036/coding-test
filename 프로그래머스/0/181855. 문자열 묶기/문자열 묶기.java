@@ -1,11 +1,12 @@
-import java.util.Arrays;
+import java.util.HashMap;
 
 class Solution {
     public int solution(String[] strArr) {
-        int[] count = new int[31]; // 1~30 인덱스 사용 (0번은 사용 안함)
+        HashMap<Integer, Integer> map = new HashMap<>();
         for (String s : strArr) {
-            count[s.length()]++;
+            int len = s.length();
+            map.put(len, map.getOrDefault(len, 0) + 1);
         }
-        return Arrays.stream(count).max().getAsInt();
+        return map.values().stream().max(Integer::compare).orElse(0);
     }
 }
