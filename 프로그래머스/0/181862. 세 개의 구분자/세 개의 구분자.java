@@ -1,30 +1,11 @@
-import java.util.ArrayList;
+import java.util.*;
 
 class Solution {
     public String[] solution(String myStr) {
-        ArrayList<String> list = new ArrayList<>();
-        StringBuilder sb = new StringBuilder();
-        
-        for (int i = 0; i < myStr.length(); i++) {
-            char c = myStr.charAt(i);
-            if (c == 'a' || c == 'b' || c == 'c') {
-                if (sb.length() > 0) {
-                    list.add(sb.toString());
-                    sb.setLength(0);
-                }
-            } else {
-                sb.append(c);
-            }
-        }
-        // 마지막에 남은 문자열 추가
-        if (sb.length() > 0) {
-            list.add(sb.toString());
-        }
-        
-        if (list.isEmpty()) {
-            return new String[]{"EMPTY"};
-        } else {
-            return list.toArray(new String[0]);
-        }
+        String[] answer = Arrays.stream(myStr.replaceAll("[abc]+", " ").split(" "))
+            .filter(s -> !s.isEmpty())
+            .toArray(String[]::new);
+        if(answer.length == 0) answer = new String[]{"EMPTY"};
+        return answer;
     }
 }
