@@ -1,6 +1,6 @@
 # [level 2] DATETIME에서 DATE로 형 변환 - 59414 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/59414?language=oracle) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/59414) 
 
 ### 성능 요약
 
@@ -16,7 +16,7 @@ Empty
 
 ### 제출 일자
 
-2025년 12월 01일 21:33:25
+2026년 01월 12일 20:09:54
 
 ### 문제 설명
 
