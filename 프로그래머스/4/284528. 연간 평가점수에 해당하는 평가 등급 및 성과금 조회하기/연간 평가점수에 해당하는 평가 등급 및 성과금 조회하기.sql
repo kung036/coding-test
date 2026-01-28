@@ -1,0 +1,21 @@
+-- MySQL
+SELECT E.EMP_NO, E.EMP_NAME, 
+    CASE 
+        WHEN G.S >= 96 THEN 'S'
+        WHEN G.S >= 90 THEN 'A'
+        WHEN G.S >= 80 THEN 'B'
+        ELSE 'C'
+    END AS GRADE, 
+    CASE 
+        WHEN G.S >= 96 THEN E.SAL * 0.2
+        WHEN G.S >= 90 THEN E.SAL * 0.15
+        WHEN G.S >= 80 THEN E.SAL * 0.1
+        ELSE 0
+    END AS BONUS
+FROM HR_EMPLOYEES E
+LEFT JOIN (
+    SELECT EMP_NO, AVG(SCORE) AS S
+    FROM HR_GRADE 
+    GROUP BY EMP_NO
+) G ON E.EMP_NO = G.EMP_NO
+ORDER BY E.EMP_NO;
