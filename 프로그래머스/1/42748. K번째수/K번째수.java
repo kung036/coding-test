@@ -16,8 +16,7 @@ class Solution {
             for(int s=i; s<j; s++) subArr[index++] = array[s];
             Arrays.sort(subArr);
             answer[cnt++] = subArr[k];
-        }
-        
+        }        
         
         return answer;
     }
