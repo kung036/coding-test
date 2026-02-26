@@ -22,9 +22,7 @@ class Solution {
                 tmp--;
             }
             
-            if(i<=citations[idx] && i<=tmp) {
-                answer = i;
-            }
+            if(i<=citations[idx] && i<=tmp) answer = i;
         }
         
         return answer;
