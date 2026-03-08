@@ -9,8 +9,8 @@ class Solution {
         // 위치
         int x = 0;
         int y = 0;
-        int w = (board[0]-1)/2; // 최대 가로 좌표
-        int h = (board[1]-1)/2; // 최대 세로 좌표
+        int w = (board[0]-1) / 2; // 최대 가로 좌표
+        int h = (board[1]-1) / 2; // 최대 세로 좌표
         
         // 이동
         int[] dy = {0,0,1,-1};
