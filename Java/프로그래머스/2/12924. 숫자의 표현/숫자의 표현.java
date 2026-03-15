@@ -1,20 +1,16 @@
+import java.util.stream.*;
+
 class Solution {
     public int solution(int n) {
-        int answer = 1;
-        int sum;
-
-        for(int i=1; i<n; i++) {
-            sum = 0;
-            for(int j=i; ; j++) {
-                sum += j;
-                if(sum == n) {
-                    answer++;
-                    break;
-                }
-                else if(sum > n) break;
-            }
-        }
-
-        return answer;
+        return (int) IntStream.rangeClosed(1, n)
+                .filter(start -> {
+                    int sum = 0;
+                    for (int x = start; sum < n; x++) {
+                        sum += x;
+                        if (sum == n) return true;
+                    }
+                    return false;
+                })
+                .count();
     }
 }

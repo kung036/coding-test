@@ -1,10 +1,10 @@
 # [level 2] 숫자의 표현 - 12924 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/12924?language=java) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/12924) 
 
 ### 성능 요약
 
-메모리: 71.8 MB, 시간: 1.28 ms
+메모리: 54 MB, 시간: 4.68 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2026년 03월 13일 22:28:33
+2026년 03월 15일 20:38:50
 
 ### 문제 설명
 
