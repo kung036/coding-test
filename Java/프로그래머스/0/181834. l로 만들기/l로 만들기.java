@@ -1,10 +1,13 @@
 class Solution {
     public String solution(String myString) {
-        StringBuilder sb = new StringBuilder();
-        for (char c : myString.toCharArray()) {
-            if (c < 'l') sb.append('l');
-            else sb.append(c);
+        char[] arr = myString.toCharArray();
+
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] < 'l') {
+                arr[i] = 'l';
+            }
         }
-        return sb.toString();
+
+        return new String(arr);
     }
 }
