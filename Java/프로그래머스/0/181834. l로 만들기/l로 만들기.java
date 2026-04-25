@@ -3,9 +3,7 @@ class Solution {
         char[] arr = myString.toCharArray();
 
         for (int i = 0; i < arr.length; i++) {
-            if (arr[i] < 'l') {
-                arr[i] = 'l';
-            }
+            if (arr[i] < 'l') arr[i] = 'l';
         }
 
         return new String(arr);
