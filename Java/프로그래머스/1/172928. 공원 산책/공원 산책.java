@@ -32,7 +32,6 @@ class Solution {
             int nx = x + dx[index] * move;
 
             // 공원에서 벗어난 경우
-            // System.out.println("=" + dir + " " + ny + " " + nx);
             if(nx < 0 || w <= nx || ny < 0 || h <= ny) continue;
             
             // 장애물인 경우
@@ -40,7 +39,7 @@ class Solution {
             for(int i=1; i<=move; i++) {
                 ny = y + dy[index] * i;
                 nx = x + dx[index] * i;
-                // System.out.println("-> " + dir + " " + ny + " " + nx + " " + park[ny].charAt(nx));
+
                 if(park[ny].charAt(nx) == 'X') {
                     b = false;
                     break;
@@ -50,7 +49,6 @@ class Solution {
             if(b) {
                 y = ny;
                 x = nx;
-                // System.out.println(dir + " " + y + " " + x);
             }
         }
         
