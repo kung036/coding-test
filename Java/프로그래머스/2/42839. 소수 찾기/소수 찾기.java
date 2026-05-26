@@ -1,45 +1,54 @@
 import java.util.*;
 
 class Solution {
-    Set<Integer> set = new HashSet<>();
-    boolean[] visited;
-    
+    static Set<Integer> set;
+    static boolean[] visited;
+    static int max = 0;
+
     public int solution(String numbers) {
-        // 모든 경우의 수 찾기
+        set = new HashSet<>();
         visited = new boolean[numbers.length()];
-        char[] ch = numbers.toCharArray();
-        dfs("", ch);
-        
-        // 소수인지 확인하기
+
+        perm(numbers, "");
+
+        boolean[] isPrime = sieve(max);
+
         int answer = 0;
-        for(int s : set) {
-            if(s == 2) {
-                answer++;
-                continue;
-            } else if(s%2 == 0 || s == 0 || s == 1) continue;
-            
-            boolean check = true;
-            for(int i=3; i<=s/2; i++) {
-                if(s%i == 0) {
-                    check = false;
-                    break;
-                }
-            }
-            if(check) answer++;
+        for (int num : set) {
+            if (num >= 2 && isPrime[num]) answer++;
         }
-        
         return answer;
     }
-    
-    public void dfs(String s, char[] ch) {
-        if(s.length() == ch.length) return;
-        
-        for(int i=0; i<ch.length; i++) {
-            if(visited[i]) continue;
-            set.add(Integer.valueOf(s+ch[i]));
+
+    private void perm(String numbers, String current) {
+        if (!current.isEmpty()) {
+            int value = Integer.parseInt(current);
+            set.add(value);
+            max = Math.max(max, value);
+        }
+
+        for (int i = 0; i < numbers.length(); i++) {
+            if (visited[i]) continue;
+
             visited[i] = true;
-            dfs(s+ch[i], ch);
+            perm(numbers, current + numbers.charAt(i));
             visited[i] = false;
         }
+    }
+
+    private boolean[] sieve(int n) {
+        if (n < 2) return new boolean[Math.max(n + 1, 2)];
+
+        boolean[] prime = new boolean[n + 1];
+        Arrays.fill(prime, true);
+        prime[0] = prime[1] = false;
+
+        for (int i = 2; i * i <= n; i++) {
+            if (!prime[i]) continue;
+            for (int j = i * i; j <= n; j += i) {
+                prime[j] = false;
+            }
+        }
+        return prime;
     }
 }
