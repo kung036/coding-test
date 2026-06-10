@@ -1,13 +1,11 @@
 import java.util.*;
+import java.util.stream.*;
 
 class Solution {
     public int solution(int[] nums) {
-        Set<Integer> set = new HashSet<>(nums.length);
-        
-        for (int num : nums) {
-            set.add(num);
-        }
-        
-        return Math.min(set.size(), nums.length / 2);
+        return Math.min(
+            (int) Arrays.stream(nums).distinct().count(),
+            nums.length / 2
+        );
     }
 }
